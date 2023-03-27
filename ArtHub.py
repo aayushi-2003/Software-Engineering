@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+import requests
 
 
 class ArtEvent:
@@ -69,6 +70,23 @@ if __name__ == '__main__':
         print(f"Date: {event.date}")
         print(f"Time: {event.time}")
         print(f"Entry Fee: {event.entry_fee}")
+
+        object_id = '436535'
+
+        # Make an API request to the Met Museum API to get the artwork information
+        response = requests.get(f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{object_id}')
+
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Get the artwork information from the API response
+            artwork_data = response.json()
+            # Print the artwork information 
+            print(f"Artwork Title: {artwork_data['title']}")
+            print(f"Artist: {artwork_data['artistDisplayName']}")
+            print(f"Department: {artwork_data['department']}")
+        else:
+            # If the request was not successful, print an error message
+            print(f"Error: {response.status_code} - {response.reason}")
 
     unittest.main()
 
